@@ -1,0 +1,298 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- ... head metadata ... -->
+    <title>MovieHive | Ad Free Movies, TV Shows, More</title>
+    <link rel="icon" href="images/32.png" type="image/x-icon">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="MovieHive | Ad Free Movies" />
+    <meta name="description" content="Enjoy endless free movies at the tip of your finger with MovieHive." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.moviehive.lol/" />
+    <meta property="og:title" content="MovieHive | Ad Free Movies" />
+    <meta property="og:description" content="Enjoy endless free movies at the tip of your finger with MovieHive." />
+    <meta property="og:image" content="https://i.imgur.com/WWKVaTT.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.moviehive.lol/" />
+    <meta property="twitter:title" content="MovieHive | Ad Free Movies" />
+    <meta property="twitter:description"
+        content="Enjoy endless free movies at the tip of your finger with MovieHive." />
+    <meta property="twitter:image" content="https://i.imgur.com/WWKVaTT.png" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <link rel="stylesheet" href="https://dopebox.to/css/group_11/theme_3/style.min.css?v=8.4">
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            margin-top: 0;
+            padding-top: 0;
+            font-family: Arial, sans-serif;
+            background-color: rgb(0, 0, 0);
+        }
+
+
+
+
+
+        .mobile-menu-icon {
+            display: none;
+        }
+
+        @media only screen and (max-width: 768px) {
+
+            .search-box,
+            .login-btn {
+                display: none;
+            }
+
+            .mobile-menu-icon {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #131312;
+                border: 1px solid #aaa;
+                border-radius: 4px;
+            }
+
+            .banner {
+                width: 200px;
+            }
+
+            #trending-movie-banner::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                /* Determines how much of the bottom part you want to fade */
+                background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+                pointer-events: none;
+                /* Ensures the gradient overlay doesn't interfere with any potential interactions with the banner */
+            }
+
+        }
+
+        #results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .movie-details {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px 10px;
+            font-size: 12px;
+            color: white;
+        }
+
+
+        .movie {
+            margin: 10px;
+            width: 200px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background-color: #131312;
+            cursor: pointer;
+        }
+
+        .movie img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .movie-title {
+            padding: 10px;
+            font-size: 14px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <div class="container">
+            <div id="mobile_search"><i class="fa fa-search"></i></div>
+            <a href="/" id="logo" title="Moviehive.lol">
+                <img src="movies.png" alt="Logo">
+
+                <div class="clearfix"></div>
+            </a>
+            <!--Begin: Menu-->
+
+            <!--End: Menu-->
+            <div id="search">
+                <div class="search-content">
+                    <form class="searchForm">
+                        <div class="search-icon"><i class="fa fa-search"></i></div>
+                        <input id="search-input" v-model="keyword" type="text" class="form-control search-input"
+                            autocomplete="off" name="keyword" placeholder="Enter keywords...">
+                    </form>
+
+                </div>
+            </div>
+            <div id="header_browser">
+                <a href="https://www.instagram.com/moviehive.lol/?utm_source=qr">
+                    <div class="header-btn"><img src="link.png" style="height: 24px;"></div>
+                </a>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div id="search-query" style="color: white; margin-left: 2rem;"></div>
+    <div id="results"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchForm = document.querySelector('.searchForm');
+
+            if (searchForm) {
+                searchForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    redirectToSearchPage();
+                });
+            }
+
+            function redirectToSearchPage() {
+                const query = document.getElementById('search-input').value.trim();
+                if (query) {
+                    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+    </script>
+
+    <script>
+
+
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q'); // Assume 'q' is the parameter for the search query
+        const TMDB_API_KEY = 'c9cbc16ed2cc92ee656d643c52f8c6a1';
+
+        const searchQueryDiv = document.getElementById('search-query');
+        searchQueryDiv.innerHTML = `<h2>Search Results for: "${query}"</h2>`;
+
+        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const movies = data.results;
+                const resultsDiv = document.getElementById('results');
+
+                movies.forEach(movie => {
+                    // Check if movie has a poster
+                    if (movie.poster_path) {
+                        const movieDiv = document.createElement('div');
+                        movieDiv.className = 'movie';
+
+                        const posterImg = document.createElement('img');
+                        posterImg.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+                        posterImg.alt = movie.title;
+                        posterImg.addEventListener('click', () => {
+                            window.location.href = `/movie.html?id=${movie.id}`;
+                        });
+
+                        const titleDiv = document.createElement('div');
+                        titleDiv.className = 'movie-title';
+                        titleDiv.innerText = movie.title;
+
+                        // Adding movie details (rating and release year)
+                        const movieDetailsDiv = document.createElement('div');
+                        movieDetailsDiv.className = 'movie-details';
+
+                        // Displaying the TMDb rating
+                        const ratingDiv = document.createElement('div');
+                        ratingDiv.innerText = `Rating: ${movie.vote_average}/10`;
+                        movieDetailsDiv.appendChild(ratingDiv);
+
+                        // Displaying the release year
+                        const yearDiv = document.createElement('div');
+                        yearDiv.innerText = movie.release_date ? movie.release_date.split('-')[0] : 'Unknown';
+                        movieDetailsDiv.appendChild(yearDiv);
+
+                        movieDiv.appendChild(posterImg);
+                        movieDiv.appendChild(titleDiv);
+                        movieDiv.appendChild(movieDetailsDiv);  // Add this after the title
+
+                        resultsDiv.appendChild(movieDiv);
+                    }
+                });
+            });
+
+
+    </script>
+
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.1/lazysizes.min.js"
+        async></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+
+    <script type="text/javascript"
+        src="https://platform-api.sharethis.com/js/sharethis.js#property=6433be364f61b7001240a339&product=inline-share-buttons&source=platform"
+        async="async"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/postscribe/2.0.8/postscribe.min.js"></script>
+    <script>var currPage = 'watch';</script>
+    <script type="text/javascript" src="https://dopebox.to/js/group_11/app.min.js?v=6.3"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            check_favorite();
+            // get_episodes();
+            vote_info();
+            if (Cookies.get('show_share') === undefined) {
+                $('#modalshare').modal('show');
+                Cookies.set('show_share', true, { expires: 1 });
+            }
+
+            if (movie.type == 2) {
+                $.get("/ajax/season/list/" + movie.id, function (res) {
+                    $('#content-episodes').html(res);
+                });
+            } else {
+                $.get("/ajax/episode/list/" + movie.id, function (res) {
+                    $('#content-episodes').html(res);
+                });
+            }
+        });
+    </script>
+    <script src="https://dopebox.to/js/jwplayer.js?v=0.1"></script>
+    <script src="https://dopebox.to/js/player.min.js?v=1.2"></script>
+
+</body>
+
+</html>

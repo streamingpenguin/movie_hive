@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type='text/javascript' src='//pl19253805.profitablegatecpm.com/f7/a2/42/f7a242517464703017f207b4073d2eb7.js'></script>
+    <title>Watch HD Movies & TV Shows Online for Free | Moviehive</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="1 days">
+
+    <meta http-equiv="content-language" content="en" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com/">
+    <link rel="dns-prefetch" href="https://www.gstatic.com/">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://static.zdassets.com/">
+
+    <link rel="dns-prefetch" href="https://connect.facebook.net/">
+    <link rel="dns-prefetch" href="https://graph.facebook.com/">
+    <meta name="description" content="Watch thousands of HD movies and TV shows for free on Moviehive. Enjoy seamless streaming of your favorite movies without ads. No registration required.">
+
+   <meta name="keywords" content="watch movies online, HD movies free, streaming movies, online TV shows, free movie streaming, no ads">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link rel="shortcut icon"
+        href="movies.png"
+        type="image/x-icon" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.moviehive.lol/" />
+    <meta property="og:title" content="Moviehive | Endless Free Streaming" />
+    <meta property="og:image"
+        content="https://i.imgur.com/XPGH0bm.jpeg" />
+    <meta property="og:image:width" content="650">
+    <meta property="og:image:height" content="350">
+    <meta property="og:description"
+        content="Are you looking for the best site for watching movies online? A site that is not only free but also safe? If yes, search no more, you are at the right place. Moviehive allows users to watch thousands of movies and TV shows in HD quality. You are completely safe on the site as we do not have any ads or require any registration. Although we are free of charge, our quality is on the same par with that of paid streaming services. Our content library is huge with dozens of thousands of titles and our features are excellent. Only on Moviehive can you watch your favorite movies seamlessly with no buffering, lagging, redirects, and pop ups. We also update new titles on a daily basis so rest assured, fun never ends on DopeBox. Your complete satisfaction is our ultimate goal; therefore, do not hesitate to contact us should you have any issues, inquiries, or requests regarding the site." />
+    <!--Begin: Stylesheet-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <link rel="stylesheet" href="min.css">
+    <!--End: Stylesheet-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZK7R1THM3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0ZK7R1THM3');
+</script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchForm = document.querySelector('.searchForm');
+
+            if (searchForm) {
+                searchForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    redirectToSearchPage();
+                });
+            }
+
+            function redirectToSearchPage() {
+                const query = document.getElementById('search-input').value.trim();
+                if (query) {
+                    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+    </script>
+    <script>
+        const TMDB_API_KEY = 'c9cbc16ed2cc92ee656d643c52f8c6a1';
+
+        async function fetchTrendingMovie() {
+            try {
+                const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${TMDB_API_KEY}`);
+                const data = await response.json();
+                const trendingMovie = data.results[0];
+
+                // Split the description into an array of words
+                let descriptionWords = trendingMovie.overview.split(" ");
+
+                // Check if the words are more than 40
+                if (descriptionWords.length > 40) {
+                    descriptionWords = descriptionWords.slice(0, 40);
+                    trendingMovie.overview = descriptionWords.join(" ") + "...";
+                }
+                // Check if the words are more than 10, add a line break
+                else if (descriptionWords.length > 10) {
+                    descriptionWords.splice(10, 0, '<br>');
+                    trendingMovie.overview = descriptionWords.join(" ");
+                }
+
+                const bannerImageElement = document.getElementById('trending-movie-banner-img');
+                bannerImageElement.src = `https://image.tmdb.org/t/p/w1280${trendingMovie.backdrop_path}`;
+
+
+                const titleElement = document.getElementById('trending-movie-title');
+                titleElement.textContent = trendingMovie.title;
+
+                document.getElementById('trending-movie-description').textContent = trendingMovie.overview;
+
+                // Additional movie information
+                document.getElementById('trending-movie-rating').textContent = '⭐ ' + trendingMovie.vote_average;
+                document.getElementById('trending-movie-duration').textContent = trendingMovie.runtime + ' min'; // This information might not be present in the trending API response. In that case, you may need additional API calls to get the movie details
+                const posterImageElement = document.getElementById('trending-movie-poster');
+                posterImageElement.src = `https://image.tmdb.org/t/p/w500${trendingMovie.poster_path}`;
+
+
+                window.trendingMovieID = trendingMovie.id;
+            } catch (error) {
+                console.error('Failed to fetch trending movie', error);
+            }
+        }
+
+        function playTrendingMovie() {
+            // Here, implement the code to play the movie, for example:
+            window.location.href = `movie.html?id=${window.trendingMovieID}`;
+        }
+
+        fetchTrendingMovie();
+
+        function fetchTrendingSectionMovies() {
+            fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${TMDB_API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    const moviesContainer = document.getElementById('trending-movies-container');
+
+                    // Clear previous movies if any
+                    moviesContainer.innerHTML = '';
+
+                    // Take the first 18 movies only
+                    const limitedMovies = data.results.slice(0, 18);
+
+                    limitedMovies.forEach(movie => {
+                        // Only display movies with a poster image
+                        if (movie.poster_path) {
+                            fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}`)
+                                .then(response => response.json())
+                                .then(movieDetails => {
+                                    const rating = movieDetails.vote_average ? parseFloat(movieDetails.vote_average).toFixed(1) : 'N/A';
+                                    const year = movieDetails.release_date ? new Date(movieDetails.release_date).getFullYear() : 'N/A';
+
+                                    let movieElement = `
+                            <div class="flw-item">
+                                <div class="film-poster">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="film-poster-img lazyload" title="${movie.title}" alt="${movie.title}-free">
+                                    <a href="movie.html?id=${movie.id}" class="film-poster-ahref" title="${movie.title}"></a>
+                                </div>
+                                <div class="film-detail">
+                                    <div class="fd-infor">
+                                        <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>${rating}</span>
+                                        <span class="fdi-item"><strong>HD</strong></span>
+                                        <span class="fdi-item">${year}</span>
+                                    </div>
+                                    <h3 class="film-name"><a href="movie.html?id=${movie.id}" title="${movie.title}">${movie.title}</a></h3>
+                                    
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`;
+
+                                    moviesContainer.innerHTML += movieElement;
+                                })
+                                .catch(error => {
+                                    console.error(`Failed to fetch details for movie with ID ${movie.id}`, error);
+                                });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to fetch trending section movies', error);
+                });
+        }
+
+        fetchTrendingSectionMovies();
+
+        function fetchLatestMovies() {
+            fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`)
+                .then(response => response.json())
+                .then(data => {
+                    const moviesContainer = document.getElementById('latest-movies-container');
+
+                    // Clear previous movies if any
+                    moviesContainer.innerHTML = '';
+
+                    // Take the first 18 movies only
+                    const limitedMovies = data.results.slice(0, 18);
+
+                    limitedMovies.forEach(movie => {
+                        // Only display movies with a poster image
+                        if (movie.poster_path) {
+                            fetch(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}`)
+                                .then(response => response.json())
+                                .then(movieDetails => {
+                                    const rating = movieDetails.vote_average ? parseFloat(movieDetails.vote_average).toFixed(1) : 'N/A';
+                                    const year = movieDetails.release_date ? new Date(movieDetails.release_date).getFullYear() : 'N/A';
+
+                                    let movieElement = `
+                            <div class="flw-item">
+                                <div class="film-poster">
+                                    <img data-src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="film-poster-img lazyload" title="${movie.title}" alt="${movie.title}-free">
+                                    <a href="movie.html?id=${movie.id}" class="film-poster-ahref" title="${movie.title}"></a>
+                                </div>
+                                <div class="film-detail">
+                                    <div class="fd-infor">
+                                        <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>${rating}</span>
+                                        <span class="fdi-item"><strong>HD</strong></span>
+                                        <span class="fdi-item">${year}</span>
+                                    </div>
+                                    <h3 class="film-name"><a href="movie.html?id=${movie.id}" title="${movie.title}">${movie.title}</a></h3>
+                                    
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>`;
+
+                                    moviesContainer.innerHTML += movieElement;
+                                })
+                                .catch(error => {
+                                    console.error(`Failed to fetch details for movie with ID ${movie.id}`, error);
+                                });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to fetch latest movies', error);
+                });
+        }
+
+        function fetchTrendingTVShows() {
+            fetch(`https://api.themoviedb.org/3/trending/tv/day?api_key=${TMDB_API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tvShowsContainer = document.getElementById('trending-tv-shows');
+
+                    // Clear previous shows if any
+                    tvShowsContainer.innerHTML = '';
+
+                    // Take the first 18 TV shows only
+                    const limitedTVShows = data.results.slice(0, 18);
+
+                    limitedTVShows.forEach(show => {
+                        // Only display shows with a poster image
+                        if (show.poster_path) {
+                            const rating = show.vote_average ? parseFloat(show.vote_average).toFixed(1) : 'N/A';
+                            const year = show.first_air_date ? new Date(show.first_air_date).getFullYear() : 'N/A';
+
+                            let showElement = `
+                        <div class="flw-item">
+                            <div class="film-poster">
+                                <img data-src="https://image.tmdb.org/t/p/w500${show.poster_path}" class="film-poster-img lazyload" title="${show.name}" alt="${show.name}-free">
+                                <a href="shows.html?id=${show.id}" class="film-poster-ahref" title="${show.name}"></a>
+                            </div>
+                            <div class="film-detail">
+                                <div class="fd-infor">
+                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>${rating}</span>
+                                    <span class="fdi-item"><strong>HD</strong></span>
+                                    <span class="fdi-item">${year}</span>
+                                </div>
+                                <h3 class="film-name"><a href="shows.html?id=${show.id}" title="${show.name}">${show.name}</a></h3>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>`;
+
+                            tvShowsContainer.innerHTML += showElement;
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to fetch trending TV shows', error);
+                });
+        }
+
+
+
+
+
+        // Fetching the latest movies when the page loads
+        window.onload = function () {
+            fetchLatestMovies();
+            fetchTrendingTVShows();
+        }
+
+
+
+
+
+
+
+
+    </script>
+
+    <style>
+        .md-share-08 .modal-content {
+            border-radius: 30px !important;
+            font-size: 14px;
+            background: #fff !important;
+            color: #111 !important;
+            padding: 20px !important;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, .1) !important;
+        }
+
+        .md-share-01 .modal-title {
+            font-size: 20px !important;
+            margin: 0 0 5px !important;
+        }
+
+        .md-share-08 .msc-decor {
+            display: block;
+            margin: -20px -20px 20px;
+            width: auto;
+            border-radius: 27px;
+            overflow: hidden;
+            box-shadow: 0 15px 15px rgba(69, 13, 70, .2) !important;
+        }
+
+        .md-share-08 .msc-decor-image {
+            width: 100%;
+            padding-bottom: 47%;
+            position: relative;
+            display: block;
+        }
+
+        .md-share-08 .msc-decor-image img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            object-fit: cover
+        }
+
+        .md-share-08 .text-close {
+            padding: 30px 0 10px;
+            font-size: 12px;
+            text-decoration: underline;
+            color: #888;
+            cursor: pointer
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div id="app">
+
+
+
+        <div id="wrapper">
+            <div id="header">
+                <div class="container">
+                    <div id="mobile_search"><i class="fa fa-search"></i></div>
+                    <a href="/" id="logo" title="Moviehive.lol">
+                        <img src="movies.png" alt="Logo">
+
+                        <div class="clearfix"></div>
+                    </a>
+                    <!--Begin: Menu-->
+
+                    <!--End: Menu-->
+                    <div id="search">
+                        <div class="search-content">
+                            <form class="searchForm">
+                                <div class="search-icon"><i class="fa fa-search"></i></div>
+                                <input id="search-input" v-model="keyword" type="text" class="form-control search-input"
+                                    autocomplete="off" name="keyword" placeholder="Enter keywords...">
+                            </form>
+
+                        </div>
+                    </div>
+                    <div id="header_browser">
+                        <a href="https://www.instagram.com/moviehive.lol/?utm_source=qr"><div class="header-btn"><img src="link.png" style="height: 24px;"></div></a>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+<div id="container-fc68c841d9dc46ef3a573a81146a7f7f"></div>
+            <div id="main-wrapper">
+                <div class="container">
+                    <div id="top_slider" class="with-social">
+                        <div id="slider" class="swiper-container-initialized swiper-container-horizontal">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" data-swiper-slide-index="8" style="width: 80rem;">
+                                    <div class="slide-photo" style="display: flex;">
+                                        <img id="trending-movie-banner-img" style="width:200vh; " src="">
+                                    </div>
+
+                                    <div class="slide-caption-wrap">
+                                        <div class="slide-caption" style="margin-right: 0rem;">
+                                            <h2 id="trending-movie-title">Trending Movie</a></h2>
+                                            <div class="sc-detail">
+                                                <div class="scd-item"><i id="trending-movie-rating" class="mr-1"></i>
+                                                </div>
+                                                <div class="scd-item"><strong>HD</strong></div>
+                                                <div class="scd-item m-hide"></div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <p class="sc-desc" id="trending-movie-description"></p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div style="text-align:center;margin-bottom: 20px;margin-top:20px;display:none;" id="hgiks-top">
+                    </div>
+                    <div style="text-align: center;margin-bottom: 20px;margin-top:20px;display:none;" id="vpn-top">
+                    </div>
+
+                    <section class="block_area block_area_home section-id-01">
+                        <div class="block_area-header block_area-header-tabs">
+                            <div class="float-left bah-heading mr-4">
+                                <h2 class="cat-heading" style="color: rgb(225, 221, 221);">Trending | Movies</h2>
+                                
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="trending-section" class="tab-pane active">
+                            <div class="block_area-content block_area-list film_list film_list-grid">
+                                <div class="film_list-wrap">
+                                    <div id="trending-movies-container" class="movies-container"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content">
+
+                            <div id="trending-tv" class="tab-pane">
+                                <div class="block_area-content block_area-list film_list film_list-grid">
+                                    <div class="film_list-wrap">
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/99/61/9961a2474854c18d47c2d6ff25316451/9961a2474854c18d47c2d6ff25316451.jpg"
+                                                    class="film-poster-img lazyload" title="Ahsoka" alt="Ahsoka-free">
+                                                <a href="https://dopebox.to/tv/watch-ahsoka-online-hd-99550"
+                                                    class="film-poster-ahref" title="Ahsoka"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>7.9</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E8</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-ahsoka-online-hd-99550"
+                                                        title="Ahsoka">Ahsoka</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-ahsoka-online-hd-99550"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/98/a8/98a8ad5f22e4c013f3b163ddb83cd3ef/98a8ad5f22e4c013f3b163ddb83cd3ef.jpg"
+                                                    class="film-poster-img lazyload" title="Gen V" alt="Gen V-free">
+                                                <a href="https://dopebox.to/tv/watch-gen-v-online-hd-100792"
+                                                    class="film-poster-ahref" title="Gen V"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.1</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E3</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-gen-v-online-hd-100792"
+                                                        title="Gen V">Gen V</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-gen-v-online-hd-100792"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/09/18/09181cd4682cb40a50bc539d4ef25379/09181cd4682cb40a50bc539d4ef25379.jpg"
+                                                    class="film-poster-img lazyload" title="Loki" alt="Loki-free">
+                                                <a href="https://dopebox.to/tv/watch-loki-online-hd-42258"
+                                                    class="film-poster-ahref" title="Loki"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.2</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E6</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-loki-online-hd-42258"
+                                                        title="Loki">Loki</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-loki-online-hd-42258"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/7d/1e/7d1ead27d0cf87a09dbbf2d93b1a4e33/7d1ead27d0cf87a09dbbf2d93b1a4e33.jpg"
+                                                    class="film-poster-img lazyload"
+                                                    title="The Continental: From the World of John Wick"
+                                                    alt="The Continental: From the World of John Wick-free">
+                                                <a href="https://dopebox.to/tv/watch-the-continental-online-hd-42270"
+                                                    class="film-poster-ahref"
+                                                    title="The Continental: From the World of John Wick"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>N/A</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E2</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-the-continental-online-hd-42270"
+                                                        title="The Continental: From the World of John Wick">The
+                                                        Continental: From the World of John Wick</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-the-continental-online-hd-42270"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/82/57/82571dfa6a3f2e892bb0d95a11214bb9/82571dfa6a3f2e892bb0d95a11214bb9.jpg"
+                                                    class="film-poster-img lazyload" title="Tokyo Revengers"
+                                                    alt="Tokyo Revengers-free">
+                                                <a href="https://dopebox.to/tv/watch-tokyo-revengers-online-hd-69492"
+                                                    class="film-poster-ahref" title="Tokyo Revengers"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.1</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S2:E13</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-tokyo-revengers-online-hd-69492"
+                                                        title="Tokyo Revengers">Tokyo Revengers</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-tokyo-revengers-online-hd-69492"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/85/2d/852de117c2146b5ed32b7ad4e487ed18/852de117c2146b5ed32b7ad4e487ed18.jpg"
+                                                    class="film-poster-img lazyload"
+                                                    title="Only Murders in the Building"
+                                                    alt="Only Murders in the Building-free">
+                                                <a href="https://dopebox.se/tv/watch-only-murders-in-the-building-online-hd-71581"
+                                                    class="film-poster-ahref" title="Only Murders in the Building"
+                                                    rel=&#34;nofollow&#34;></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.1</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S3:E10</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.se/tv/watch-only-murders-in-the-building-online-hd-71581"
+                                                        rel=&#34;nofollow&#34; title="Only Murders in the Building">Only
+                                                        Murders in the Building</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a rel=&#34;nofollow&#34;
+                                                        href="https://dopebox.se/tv/watch-only-murders-in-the-building-online-hd-71581"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/75/e0/75e0bfae315594720f884d77f482e63f/75e0bfae315594720f884d77f482e63f.jpg"
+                                                    class="film-poster-img lazyload" title="One Piece"
+                                                    alt="One Piece-free">
+                                                <a href="https://dopebox.to/tv/watch-one-piece-online-hd-39514"
+                                                    class="film-poster-ahref" title="One Piece"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.9</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S21:E1076</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-one-piece-online-hd-39514"
+                                                        title="One Piece">One Piece</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-one-piece-online-hd-39514"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/c2/ea/c2eab95b13bf9a10f193aa6dfe130efd/c2eab95b13bf9a10f193aa6dfe130efd.jpg"
+                                                    class="film-poster-img lazyload" title="Bleach" alt="Bleach-free">
+                                                <a href="https://dopebox.to/tv/watch-bleach-online-hd-39484"
+                                                    class="film-poster-ahref" title="Bleach"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.2</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S2:E13</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-bleach-online-hd-39484"
+                                                        title="Bleach">Bleach</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-bleach-online-hd-39484"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/72/17/72178726296cc9f000ceb9cc2bb311f5/72178726296cc9f000ceb9cc2bb311f5.jpg"
+                                                    class="film-poster-img lazyload" title="The Eminence in Shadow"
+                                                    alt="The Eminence in Shadow-free">
+                                                <a href="https://dopebox.to/tv/watch-the-eminence-in-shadow-online-hd-94411"
+                                                    class="film-poster-ahref" title="The Eminence in Shadow"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>7.9</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E20</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-the-eminence-in-shadow-online-hd-94411"
+                                                        title="The Eminence in Shadow">The Eminence in Shadow</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-the-eminence-in-shadow-online-hd-94411"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/11/61/1161e9f386e6b1fc5efca07e91791551/1161e9f386e6b1fc5efca07e91791551.jpg"
+                                                    class="film-poster-img lazyload" title="Jujutsu Kaisen"
+                                                    alt="Jujutsu Kaisen-free">
+                                                <a href="https://dopebox.to/tv/watch-jujutsu-kaisen-online-hd-66956"
+                                                    class="film-poster-ahref" title="Jujutsu Kaisen"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.6</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E29</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-jujutsu-kaisen-online-hd-66956"
+                                                        title="Jujutsu Kaisen">Jujutsu Kaisen</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-jujutsu-kaisen-online-hd-66956"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/8c/86/8c8626696da46815b8b371953895d33b/8c8626696da46815b8b371953895d33b.jpg"
+                                                    class="film-poster-img lazyload" title="Castlevania: Nocturne"
+                                                    alt="Castlevania: Nocturne-free">
+                                                <a href="https://dopebox.to/tv/watch-castlevania-nocturne-online-hd-100768"
+                                                    class="film-poster-ahref" title="Castlevania: Nocturne"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>7.8</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E8</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-castlevania-nocturne-online-hd-100768"
+                                                        title="Castlevania: Nocturne">Castlevania: Nocturne</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-castlevania-nocturne-online-hd-100768"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/0d/d5/0dd56847fd935b98003ea15bbe3a3aba/0dd56847fd935b98003ea15bbe3a3aba.jpg"
+                                                    class="film-poster-img lazyload" title="Invasion"
+                                                    alt="Invasion-free">
+                                                <a href="https://dopebox.to/tv/watch-invasion-online-hd-73501"
+                                                    class="film-poster-ahref" title="Invasion"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>6</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S2:E7</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-invasion-online-hd-73501"
+                                                        title="Invasion">Invasion</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-invasion-online-hd-73501"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/63/a1/63a174e59956b418932d028193966b7f/63a174e59956b418932d028193966b7f.jpg"
+                                                    class="film-poster-img lazyload"
+                                                    title="The Saint&#39;s Magic Power is Omnipotent"
+                                                    alt="The Saint&#39;s Magic Power is Omnipotent-free">
+                                                <a href="https://dopebox.se/tv/watch-the-saints-magic-power-is-omnipotent-online-hd-69594"
+                                                    class="film-poster-ahref"
+                                                    title="The Saint&#39;s Magic Power is Omnipotent"
+                                                    rel=&#34;nofollow&#34;></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>7.1</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E11</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.se/tv/watch-the-saints-magic-power-is-omnipotent-online-hd-69594"
+                                                        rel=&#34;nofollow&#34;
+                                                        title="The Saint&#39;s Magic Power is Omnipotent">The
+                                                        Saint&#39;s Magic Power is Omnipotent</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a rel=&#34;nofollow&#34;
+                                                        href="https://dopebox.se/tv/watch-the-saints-magic-power-is-omnipotent-online-hd-69594"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/97/53/97530666b838e9dbd0f5039e6d0f2b62/97530666b838e9dbd0f5039e6d0f2b62.jpg"
+                                                    class="film-poster-img lazyload" title="One Piece"
+                                                    alt="One Piece-free">
+                                                <a href="https://dopebox.to/tv/watch-one-piece-online-hd-99826"
+                                                    class="film-poster-ahref" title="One Piece"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.5</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E8</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-one-piece-online-hd-99826"
+                                                        title="One Piece">One Piece</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-one-piece-online-hd-99826"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/ea/f5/eaf548a51dd3dff802422ba339f2bc71/eaf548a51dd3dff802422ba339f2bc71.jpg"
+                                                    class="film-poster-img lazyload" title="Sex Education"
+                                                    alt="Sex Education-free">
+                                                <a href="https://dopebox.to/tv/watch-sex-education-online-hd-39515"
+                                                    class="film-poster-ahref" title="Sex Education"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.4</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S4:E8</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-sex-education-online-hd-39515"
+                                                        title="Sex Education">Sex Education</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-sex-education-online-hd-39515"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/2c/a4/2ca4adf6f97441eda38c6dc3c38166d2/2ca4adf6f97441eda38c6dc3c38166d2.jpg"
+                                                    class="film-poster-img lazyload"
+                                                    title="The Walking Dead: Daryl Dixon"
+                                                    alt="The Walking Dead: Daryl Dixon-free">
+                                                <a href="https://dopebox.to/tv/watch-the-walking-dead-daryl-dixon-online-hd-100075"
+                                                    class="film-poster-ahref" title="The Walking Dead: Daryl Dixon"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.2</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E4</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-the-walking-dead-daryl-dixon-online-hd-100075"
+                                                        title="The Walking Dead: Daryl Dixon">The Walking Dead: Daryl
+                                                        Dixon</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-the-walking-dead-daryl-dixon-online-hd-100075"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/38/3b/383bb0d59e5b6751c5cba7d1cccf1478/383bb0d59e5b6751c5cba7d1cccf1478.jpg"
+                                                    class="film-poster-img lazyload" title="The Wheel of Time"
+                                                    alt="The Wheel of Time-free">
+                                                <a href="https://dopebox.to/tv/watch-the-wheel-of-time-online-hd-74476"
+                                                    class="film-poster-ahref" title="The Wheel of Time"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>7.1</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S2:E7</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-the-wheel-of-time-online-hd-74476"
+                                                        title="The Wheel of Time">The Wheel of Time</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-the-wheel-of-time-online-hd-74476"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+                                        <div class="flw-item">
+                                            <div class="film-poster">
+                                                <img data-src="https://img.dopebox.to/xxrz/250x400/243/d7/26/d726d98653e1fa6629f9289c831e590f/d726d98653e1fa6629f9289c831e590f.jpg"
+                                                    class="film-poster-img lazyload" title="The Worst of Evil"
+                                                    alt="The Worst of Evil-free">
+                                                <a href="https://dopebox.to/tv/watch-the-worst-of-evil-online-hd-100738"
+                                                    class="film-poster-ahref" title="The Worst of Evil"></a>
+                                            </div>
+                                            <div class="film-detail">
+                                                <div class="fd-infor">
+
+                                                    <span class="fdi-item"><i class="fas fa-star hl mr-1"></i>8.6</span>
+
+                                                    <span class="fdi-item"><strong>HD</strong></span>
+
+
+                                                    <span class="fdi-item">S1:E3</span>
+
+
+                                                </div>
+
+                                                <h3 class="film-name"><a
+                                                        href="https://dopebox.to/tv/watch-the-worst-of-evil-online-hd-100738"
+                                                        title="The Worst of Evil">The Worst of Evil</a>
+                                                </h3>
+
+                                                <div class="fd-btn">
+                                                    <a href="https://dopebox.to/tv/watch-the-worst-of-evil-online-hd-100738"
+                                                        class="btn btn-sm btn-play btn-secondary"><i
+                                                            class="fas fa-play mr-3"></i>Watch
+                                                        now</a>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div style="text-align:center;margin-bottom: 20px;margin-top:20px;display:none;" id="hgiks-middle">
+                    </div>
+                    <section class="block_area block_area_home section-id-02">
+
+                        <div class="block_area-content block_area-list film_list film_list-grid">
+                            <div class="film_list-wrap">
+
+
+                                <div id="latest-movies-section" class="tab-pane active">
+                                    <h2 class="section-title">Latest Movies</h2>
+                                    <div class="block_area-content block_area-list film_list film_list-grid">
+                                        <div class="film_list-wrap">
+                                            <div id="latest-movies-container" class="movies-container"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </section>
+                    <section class="block_area block_area_home section-id-02">
+                        <div class="block_area-header block_area-header-tabs">
+                            <div class="float-left bah-heading mr-4">
+                                <h2 class="cat-heading">Trending TV Shows</h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="block_area-content block_area-list film_list film_list-grid">
+                            <div class="film_list-wrap">
+                                <div id="trending-section" class="tab-pane active">
+                                    <div class="block_area-content block_area-list film_list film_list-grid">
+                                        <div class="film_list-wrap">
+                                            <div id="trending-tv-shows" class="tv-shows-container"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <h2 style="display:none;">watch movies online, watch hd movies, watch full movies, streaming movies
+                        online, free streaming movie, watch movies free, watch hd movies online, watch series online,
+                        watch hd series free</h2>
+                </div>
+            </div>
+            <div style="text-align:center;margin-bottom: 20px;margin-top:20px;display:none;" id="hgiks-bottom"></div>
+            <div id="footer">
+                <h1 style="display: none;">Watch TV Online Streaming | Watch Free Movies Online</h1>
+                <div class="container">
+
+                </div>
+            </div>
+            <div id="footer-about">
+                <div class="container">
+                    <div class="about-text">
+                        Moviehive.lol is a Free Movies streaming site with zero ads.
+                        We let you watch movies online without having to register or paying, with over 10000 movies and
+                        TV-Series.
+                        You can also Download full movies from MoviesCloud and watch it later if you want.
+                    </div>
+                    <p class="copyright">© Moviehive.net</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal fade premodal premodal-login" id="modallogin" tabindex="-1" role="dialog"
+            aria-labelledby="modallogintitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-login-tabs">
+                        <div class="mlt-item active">
+                            <button type="button" class="btn mlt-btn btn-light login-tab-link">Login</button>
+                        </div>
+                        <div class="mlt-item">
+                            <button type="button" class="btn mlt-btn btn-light register-tab-link">Register</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="tab-content">
+                        <!--Begin: tab login-->
+                        <div id="modal-tab-login" class="tab-pane active auth-tab">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modallogintitle">Welcome back!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="preform model-form" @submit="login" method="post">
+                                    <div v-if="error_login" class="alert alert-danger" role="alert">{{error_message}}
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="email">Email address</label>
+                                        <input v-model="email" type="email" class="form-control" id="email"
+                                            placeholder="name@email.com" required>
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="password">Password</label>
+                                        <input v-model="password" type="password" class="form-control" id="password"
+                                            placeholder="Password" required>
+                                    </div>
+                                    <div class="form-check custom-control custom-checkbox">
+                                        <div class="float-left">
+                                            <input name="remember" v-model="remember" type="checkbox"
+                                                class="custom-control-input" id="remember">
+                                            <label class="custom-control-label" for="remember">Remember me</label>
+                                        </div>
+                                        <div class="float-right">
+                                            <a href="javascript:void(0)"
+                                                class="link-highlight text-forgot forgot-tab-link">Forgot password
+                                                ?</a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group login-btn mt-4">
+                                        <button class="btn btn-primary btn-block">Login</button>
+                                        <div class="loading-relative" id="login-loading" style="display: none;">
+                                            <div class="loading">
+                                                <div class="span1"></div>
+                                                <div class="span2"></div>
+                                                <div class="span3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End: tab login-->
+                        <!--Begin: tab forgot-->
+                        <div id="modal-tab-forgot" class="tab-pane fade auth-tab">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modallogintitle3">Reset Password</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="preform model-form" @submit="forgot_password" method="post">
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="forgot-email">Your Email</label>
+                                        <input v-model="email" type="email" class="form-control" id="forgot-email"
+                                            placeholder="name@email.com" required>
+                                    </div>
+                                    <div class="form-group login-btn mt-4">
+                                        <button class="btn btn-primary btn-block">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End: tab forgot-->
+                        <!--Begin: tab register-->
+                        <div id="modal-tab-register" class="tab-pane fade auth-tab">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modallogintitle2">Create an Account</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="preform model-form" @submit="register" method="post">
+                                    <div v-if="error_register" class="alert alert-danger" role="alert">{{error_message}}
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="re-username">Your name</label>
+                                        <input v-model="name" type="text" class="form-control" id="re-username"
+                                            placeholder="Name" required>
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="re-email">Email address</label>
+                                        <input v-model="email" type="email" class="form-control" id="re-email"
+                                            placeholder="name@email.com" required>
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="re-password">Password</label>
+                                        <input v-model="password" type="password" class="form-control" id="re-password"
+                                            placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group model-form-group">
+                                        <label class="prelabel" for="re-confirmpassword">Confirm Password</label>
+                                        <input v-model="confirm_password" type="password" class="form-control"
+                                            id="re-confirmpassword" placeholder="Confirm Password" autocomplete="off"
+                                            required>
+                                    </div>
+                                    <div class="form-group login-btn mt-4">
+                                        <button class="btn btn-primary btn-block">Register</button>
+                                        <div class="loading-relative" id="register-loading" style="display: none;">
+                                            <div class="loading">
+                                                <div class="span1"></div>
+                                                <div class="span2"></div>
+                                                <div class="span3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End: tab register-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.1/lazysizes.min.js"
+        async></script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.1/lazysizes.min.js"
+        async></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+
+
+    <script type="text/javascript" src="min.js"></script>
+
+
+
+</body>
+
+</html>
